@@ -1,11 +1,11 @@
-# My-Express-TypeScript-Template
+# Authentication App Express Backend Project (The backend for the Auth App Website deployed [here](https://authapp-adeoluwa.netlify.app/)
 
-### A self made template for writing minimalistic Nodejs backend code with Express.
+This project was developed using `Node` v "^18.13.0", `Express` v "^4.18.1", `Typescript` v "^4.7.2" and `Jest` v "^29.3.1" libraries.
 
-### To run the code in development `npm install` to install dependencies, then simply run `npm run dev` in the terminal.
+The Catwiki Website was deployed with `Netlify` link [here](https://authapp-adeoluwa.netlify.app/).
 
-### To run the test run `npm run test`, then to get test coverage insight run `npm run test-coverage` in the terminal.
+Figma design was provided by [devChallenges.io](https://devchallenges.io/).
 
-### To create get it compiled down to JS simply run `npx tsc` in the terminal, compile it into a `dist` folder as outlined in the `tsconfig.json` file. 
+You can clone project and customise at your end.
 
-## Feel free to clone repo and improve on it.
+### API Documentation
