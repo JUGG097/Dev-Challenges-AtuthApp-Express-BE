@@ -1,11 +1,8 @@
 import express, { Request, Response, NextFunction } from "express";
-import dotenv from "dotenv";
 import logger from "morgan";
 import createError from "http-errors";
 import cookieParser from "cookie-parser";
-
-dotenv.config();
-const port = process.env.PORT;
+import userRouter from "./routes/users.route";
 
 const app = express();
 app.use(logger("dev"));
@@ -15,8 +12,12 @@ app.use(cookieParser());
 
 // Routes
 app.get("/check", (req: Request, res: Response) => {
-	res.status(200).json({ success: true, message: "Server is up and running" });
+	res.status(200).json({
+		success: true,
+		message: "Server is up and running",
+	});
 });
+app.use("/api/v1/auth", userRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req: Request, res: Response, next: NextFunction) {

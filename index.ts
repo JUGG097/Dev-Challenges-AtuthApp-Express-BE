@@ -1,14 +1,28 @@
-import app from "./app"
-import dotenv from "dotenv";
-// import connectDB from "./utils/db";
+import app from "./app";
+import { PORT } from "./config/default";
+import { sequelize } from "./utils/PgDatabase";
 
-dotenv.config();
-const port = process.env.PORT;
+app.listen(PORT, async () => {
+	// Initialize and Test Sequelize PostGres connection
+	try {
+		await sequelize.authenticate();
+		console.log("Connection has been established successfully.");
+	} catch (error) {
+		console.error("Unable to connect to the database:", error);
+	}
 
-app.listen(port, async () => {
-    // Initialize MongoDB connection
-    // await connectDB();
+	// Sync models wth DB
+	sequelize
+		.sync()
+		.then(() => {
+			console.log("Synced db.");
+		})
+		.catch((err) => {
+			console.log("Failed to sync db: " + err.message);
+		});
+	
+	// Confirm server port
 	console.log(
-		`Listening on ${port}, App is running at http://localhost:${port}`
+		`Listening on ${PORT}, App is running at http://localhost:${PORT}`
 	);
 });
