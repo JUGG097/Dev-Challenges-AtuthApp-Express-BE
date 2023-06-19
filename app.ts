@@ -17,7 +17,7 @@ app.get("/check", (req: Request, res: Response) => {
 		message: "Server is up and running",
 	});
 });
-app.use("/api/v1/auth", userRouter);
+app.use("/api/v1", userRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req: Request, res: Response, next: NextFunction) {

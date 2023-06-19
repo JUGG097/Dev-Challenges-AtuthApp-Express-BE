@@ -3,6 +3,7 @@ import { validationResult } from "express-validator";
 import { createUser, getUserByEmail } from "../services/users.service";
 import { omit } from "lodash";
 import bcrypt from "bcrypt";
+import { signJWT } from "../utils/JwtHelpers";
 
 export const userSignUp = async (
 	req: Request,
@@ -18,6 +19,14 @@ export const userSignUp = async (
 				.json({ success: false, message: errors.array() });
 		}
 
+		// Check if user exists
+		const userDetails = await getUserByEmail(req.body.email);
+		if (userDetails) {
+			return res
+				.status(400)
+				.json({ success: false, message: "User Already Exists" });
+		}
+
 		// Encrypt Password
 		const hashedPassword = await bcrypt.hash(req.body.password, 10);
 
@@ -29,9 +38,18 @@ export const userSignUp = async (
 
 		const user = await createUser(payload);
 
+		// Generate JWT token
+		const token = signJWT(user["email"]);
+		if (!token) {
+			return res
+				.status(400)
+				.json({ success: false, message: "Token generation failed" });
+		}
+
 		return res.status(200).json({
 			success: true,
 			data: omit(user, ["password"]),
+			authToken: token,
 		});
 	} catch (error) {
 		return next(error);
@@ -71,9 +89,18 @@ export const userLogIn = async (
 				.json({ success: false, message: "Invalid credentials" });
 		}
 
+		// Generate JWT token
+		const token = signJWT(userDetails["email"]);
+		if (!token) {
+			return res
+				.status(400)
+				.json({ success: false, message: "Token generation failed" });
+		}
+
 		return res.status(200).json({
 			success: true,
 			data: omit(userDetails, ["password"]),
+			authToken: token,
 		});
 	} catch (error) {
 		return next(error);
