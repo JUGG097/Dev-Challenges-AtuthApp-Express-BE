@@ -1,9 +1,7 @@
 import express from "express";
 import {
 	updateProfileValidator,
-	userAuthValidator,
 } from "../validators/users.validator";
-import { userLogIn, userSignUp } from "../controllers/auth.controller";
 import { authenticateJWT } from "../middlewares/JwtAuthentication";
 import {
 	userProfileDetails,
@@ -12,14 +10,10 @@ import {
 
 const router = express.Router();
 
-router.post("/auth/signup", userAuthValidator, userSignUp);
-
-router.post("/auth/login", userAuthValidator, userLogIn);
-
-router.get("/user/profile", authenticateJWT, userProfileDetails);
+router.get("/profile", authenticateJWT, userProfileDetails);
 
 router.put(
-	"/user/editProfile",
+	"/editProfile",
 	authenticateJWT,
 	updateProfileValidator,
 	userProfileUpdate

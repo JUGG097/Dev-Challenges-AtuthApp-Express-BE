@@ -3,6 +3,7 @@ import logger from "morgan";
 import createError from "http-errors";
 import cookieParser from "cookie-parser";
 import userRouter from "./routes/users.route";
+import authRouter from "./routes/auth.route";
 
 const app = express();
 app.use(logger("dev"));
@@ -17,7 +18,9 @@ app.get("/check", (req: Request, res: Response) => {
 		message: "Server is up and running",
 	});
 });
-app.use("/api/v1", userRouter);
+
+app.use("/api/v1/auth", authRouter);
+app.use("/api/v1/user", userRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req: Request, res: Response, next: NextFunction) {

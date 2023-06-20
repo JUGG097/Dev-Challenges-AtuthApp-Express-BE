@@ -17,3 +17,9 @@ export interface createPayload extends updatePayload {
 export interface CustomRequest extends Request {
 	userDetails?: string | JwtPayload | any;
 }
+
+export interface refreshTokenPayload {
+	UserId: number;
+	token: string;
+	expiry_date: Date;
+}

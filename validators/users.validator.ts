@@ -49,3 +49,13 @@ export const updateProfileValidator = [
 		})
 		.escape(),
 ];
+
+export const refreshTokenValidator = [
+	body("refreshToken", "Token is required")
+		.exists({
+			checkFalsy: true,
+			checkNull: true,
+		})
+		.escape(),
+	// escape helps to sanitize the value
+];

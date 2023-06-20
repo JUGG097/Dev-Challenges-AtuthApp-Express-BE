@@ -3,7 +3,9 @@ import { validationResult } from "express-validator";
 import { createUser, getUserByEmail } from "../services/users.service";
 import { omit } from "lodash";
 import bcrypt from "bcrypt";
+import crypto from "crypto";
 import { signJWT } from "../utils/JwtHelpers";
+import { createRefreshToken } from "../services/refreshToken.service";
 
 export const userSignUp = async (
 	req: Request,
@@ -90,17 +92,27 @@ export const userLogIn = async (
 		}
 
 		// Generate JWT token
-		const token = signJWT(userDetails["email"]);
-		if (!token) {
+		const authToken = signJWT(userDetails["email"]);
+		if (!authToken) {
 			return res
 				.status(400)
 				.json({ success: false, message: "Token generation failed" });
 		}
 
+		// Generate refresh token
+		const tokenPayload = {
+			UserId: userDetails["id"],
+			token: crypto.randomUUID(),
+			// expires 24 hours from now
+			expiry_date: new Date(Date.now() + 86400000),
+		};
+		const refreshToken = await createRefreshToken(tokenPayload);
+
 		return res.status(200).json({
 			success: true,
 			data: omit(userDetails, ["password"]),
-			authToken: token,
+			authToken,
+			refreshToken: refreshToken["token"],
 		});
 	} catch (error) {
 		return next(error);
