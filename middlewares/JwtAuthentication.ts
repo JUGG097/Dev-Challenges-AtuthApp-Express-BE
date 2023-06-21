@@ -14,7 +14,7 @@ export const authenticateJWT = (
 		const decodedToken = verifyJWS(token);
 		if (!decodedToken) {
 			return res.status(401).json({
-				sucess: false,
+				success: false,
 				message: "Authentication Failed: Invalid Token.",
 			});
 		}
@@ -22,7 +22,7 @@ export const authenticateJWT = (
 		return next();
 	} else {
 		return res.status(401).json({
-			sucess: false,
+			success: false,
 			message: "Authentication Failed: No token provided.",
 		});
 	}

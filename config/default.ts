@@ -1,6 +1,9 @@
 import dotenv from "dotenv";
+import path from "path";
 
-dotenv.config();
+dotenv.config({
+	path: path.resolve(__dirname, `../${process.env.NODE_ENV}.env`),
+});
 
 export const PORT = process.env.PORT || "";
 export const PGUSER = process.env.PGUSER || "";

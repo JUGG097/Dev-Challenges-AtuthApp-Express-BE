@@ -1,3 +1,4 @@
+import { exit } from "process";
 import app from "./app";
 import { PORT } from "./config/default";
 import { sequelize } from "./utils/PgDatabase";
@@ -19,6 +20,7 @@ app.listen(PORT, async () => {
 		})
 		.catch((err) => {
 			console.log("Failed to sync db: " + err.message);
+			exit(1)
 		});
 	
 	// Confirm server port
